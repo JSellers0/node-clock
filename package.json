@@ -1,16 +1,28 @@
 {
+  "name": "node-time-clock",
+  "version": "0.0.1",
+  "description": "Port of PyClock to Node.js",
+  "scripts": {
+    "dev": "nodemon ./src/app.ts",
+    "build": "tsc",
+    "start": "node ./dist/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "app.js",
+  "author": "Sellerman",
+  "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "mariadb": "^3.0.1"
+    "http-errors": "^2.0.0",
+    "mariadb": "^3.0.1",
+    "nunjucks": "^3.2.3"
   },
-  "name": "pi_express_apps",
-  "version": "0.0.1",
-  "description": "package for express apps on my pi",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Sellerman",
-  "license": "ISC"
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/http-errors": "^1.8.2",
+    "@types/node": "^18.7.15",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1"
+  }
 }
