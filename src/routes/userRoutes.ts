@@ -6,9 +6,17 @@ import {user_manager} from '../modules/user_manager'
 
 const userRoute:Router = express.Router()
 
-userRoute.get('/register', crsfProtection, userController.user_create_get)
+userRoute.route('/register')
+    .get(crsfProtection, userController.user_create_get)
+    .post(parseForm, crsfProtection, userController.user_create_post)
 
-userRoute.get('/login', crsfProtection, userController.user_login_get)
-userRoute.post('/login', parseForm, crsfProtection, userController.user_login_post)
+userRoute.route('/login')
+    .get(crsfProtection, userController.user_login_get)
+    .post(parseForm, crsfProtection, userController.user_login_post)
+
+userRoute.route('/account')
+    .get(crsfProtection, userController.user_detail_get)
+    .put(parseForm, crsfProtection, userController.user_detail_update)
+    .delete(parseForm, crsfProtection, userController.user_detail_delete)
 
 export default userRoute

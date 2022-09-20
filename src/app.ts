@@ -6,13 +6,12 @@ import createHttpError from 'http-errors'
 import nunjucks from 'nunjucks'
 import path from 'path'
 
-import {errorHandler} from './modules/config'
-import clockRoute from './routes/clock'
+import {domainHandler, errorHandler, PORT} from './modules/config'
+import clockRoute from './routes/clockRoutes'
 import userRoute from './routes/userRoutes'
 
 dotenv.config()
 
-const PORT: Number = Number(process.env.PORT) || 3000
 const app: Application = express()
 
 nunjucks.configure(path.resolve(__dirname, 'views'),{
@@ -22,7 +21,11 @@ nunjucks.configure(path.resolve(__dirname, 'views'),{
     watch:true
 })
 
+app.use('/static', express.static(__dirname + "/static"))
+
 app.use(cookieParser())
+
+app.use(domainHandler)
 
 app.use('/', clockRoute)
 app.use('/users', userRoute)
