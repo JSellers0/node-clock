@@ -1,0 +1,37 @@
+{% extends "parent.html" %}
+{% block head %}
+{% endblock %}
+{% block page_name %}Python/Flask Time Clock{% endblock %}
+
+{% block body %}
+<div class="content-section">
+    {% if current_user.is_authenticated %}
+    <div>
+        {% if "Click" in message %}
+            <h1 id="message">{{ message }}</h1>
+        {% elif "at" in message %}
+            <h2 id="message">
+                {{ message[ : message.index("\n")] }}<br/>
+                {{ message[message.index("\n") : message.index("at")] }}<br/>
+                {{ message[message.index("at") : ] }}
+            </h2>
+        {% elif "Stopped" in message %}
+            <h2 id="message">
+                {{ message[ : message.index("\n")] }}<br/>
+                {{ message[message.index("\n") : ] }}
+            </h2>
+        {% endif %}
+    </div><br/>
+    <div id="controlpanel" class="form-group">
+        <a class="btn btn-outline-info" href={{ url_for( "start" ) }} id="start">Start</a>
+        <a class="btn btn-outline-info" href={{ url_for( "stop" ) }} id="stop">Stop</a>
+        <a class="btn btn-outline-info" href={{ url_for( "adjust" ) }} id="adjust">Adjust</a>
+        <a class="btn btn-outline-info" href={{ url_for( "report" ) }} id="report">Report</a>
+    </div>
+    {% else %}
+    <div id="media content-section">
+        <h1>Register or Login to use TimeClock</h1>
+    </div>
+    {% endif %}
+</div>
+{% endblock body %}

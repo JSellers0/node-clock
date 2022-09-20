@@ -1,0 +1,67 @@
+{% extends "parent.html" %}
+{% block head %}
+{% endblock %}
+{% block page_name %}Edit {{ item_type.title() }}{% endblock %}
+
+{% block body %}
+<div class="content-section">
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+        <legend>Make updates and then click Submit.</legend>
+        <div class="form-group"
+        {% if item_type != "time" %}
+        style="display:none"
+        {% endif %}
+        >
+            {{ form.start.label(class="form-control-label") }}
+            {{ form.start(class="form-control form-control-lg", value=item.get("start")) }}
+        </div>
+        <div class="form-group"
+        {% if item_type != "time" %}
+        style="display:none"
+        {% endif %}
+        >
+            {{ form.stop.label(class="form-control-label") }}
+            {{ form.stop(class="form-control form-control-lg", value=item.get("stop")) }}
+        </div>
+        <div class="form-group"
+        {% if item_type not in ["time", "project"] %}
+        style="display:none"
+        {% endif %}
+        >
+            {{ form.project.label(class="form-control-label") }}
+            {{ form.project(class="form-control form-control-lg", value=item.get("project_name")) }}
+        </div>
+        <div class="form-group"
+        {% if item_type not in ["time", "task"] %}
+        style="display:none"
+        {% endif %}
+        >
+            {{ form.task.label(class="form-control-label") }}
+            {{ form.task(class="form-control form-control-lg", value=item.get("task_name")) }}
+        </div>
+        <div class="form-group"
+        {% if item_type not in ["time", "note"] %}
+        style="display:none"
+        {% endif %}
+        >
+            {{ form.note.label(class="form-control-label") }}
+            {{ form.note(class="form-control form-control-lg", value=item.get("note_name")) }}
+        </div>
+        <div class="form-group"
+        {% if item_type not in ["time"] %}
+        style="display:none"
+        {% endif %}
+        >
+            {{ form.adjacent() }}
+            {{ form.adjacent.label() }}
+        </div>
+    </fieldset>
+    <div class="form-group">
+        {{ form.submit(class="btn btn-outline-info") }}
+        <a href={{ url_for( "adjust" ) }} class="btn btn-outline-info">Cancel</a>
+    </div>
+</form>
+</div>
+{% endblock body %}
