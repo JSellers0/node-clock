@@ -1,8 +1,7 @@
 import express, {Router, Request, Response} from 'express'
 
 import * as userController from '../controllers/userController'
-import {crsfProtection, parseForm} from '../modules/config'
-import {user_manager} from '../modules/user_manager'
+import {crsfProtection, parseForm} from '../middleware/config'
 
 const userRoute:Router = express.Router()
 
@@ -18,5 +17,8 @@ userRoute.route('/account')
     .get(crsfProtection, userController.user_detail_get)
     .put(parseForm, crsfProtection, userController.user_detail_update)
     .delete(parseForm, crsfProtection, userController.user_detail_delete)
+
+userRoute.route('/logout')
+    .get(userController.user_logout)
 
 export default userRoute

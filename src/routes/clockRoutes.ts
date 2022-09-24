@@ -1,14 +1,11 @@
 import express, {Router, Request, Response} from 'express'
 
 import * as clockController from '../controllers/clockController'
-import {crsfProtection, parseForm} from '../modules/config'
+import {crsfProtection, parseForm} from '../middleware/config'
 
 const clockRoute:Router = express.Router()
 
-clockRoute.get('/', (req: Request, res: Response) => {
-    res.setHeader('Set-Cookie', 'isAuth=false')
-    res.send("Home Route")
-})
+clockRoute.get('/', clockController.clock_get)
 
 clockRoute.route('/start')
     .get(crsfProtection, clockController.clock_start_get)
