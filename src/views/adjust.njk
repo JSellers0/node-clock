@@ -1,0 +1,19 @@
+{% extends "parent.njk" %}
+{% block head %}
+{% endblock %}
+{% block page_name %}Adjustment menu{% endblock %}
+
+{% block body %}
+<div class="content-section">
+    <div id="controlpanel" class="form-group">
+        <a class="btn btn-outline-info" href={{ domain + "/adjust/time" }} id="adjust_time">Adjust Timestamps</a>
+        <a class="btn btn-outline-info" href={{ domain + "/adjust/project"}} id="adjust_project">Edit Projects</a>
+        <a class="btn btn-outline-info" href={{ domain + "/adjust/task"}} id="adjust_task">Edit Tasks</a>
+        <a class="btn btn-outline-info" href={{ domain + "/adjust/note"}} id="adjust_note">Edit Notes</a>
+        
+    </div>
+</div>
+<p>
+    <a href={{ domain + "/"}}>Back to Main Menu</a>
+</p>
+{% endblock body %}

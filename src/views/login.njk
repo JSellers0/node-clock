@@ -10,31 +10,28 @@
         <fieldset class="form-group">
             <legend>Login To Access Additional Site Features!</legend>
             <div class="form-group">
-                <label class="form-control-label" for="user_name">Username</label>
-                <input class="form-control form-control-lg" id="user_name" maxlength="40" name="user_name" 
-                required="" type="text" value="" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" 
-                autocomplete="off" />
+                {{ form.user_name.label('form-control-label') | safe }}
+                {{ form.user_name.field('form-control form-control-lg') | safe}}
             </div>
             <div class="form-group">
-                <label class="form-control-label" for="password">Password</label>
-                <input class="form-control form-control-lg" id="password" name="user_name" 
-                required="" type="password" value="" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" 
-                autocomplete="off" />
+                {{ form.password.label('form-control-label') | safe }}
+                {{ form.password.field('form-control form-control-lg') | safe}}
             </div>
             <div class="form-check">
-                <input class="form-check-input" id="remember" name="remember" type="checkbox" value="y">
-                <label class="form-check-label" for="remember">Remember Me</label>
+                {{ form.remember.field('form-check-input') | safe}}
+                {{ form.remember.label('form-check-label') | safe }}
             </div>
         </fieldset>
         <div class="form-group">
-            <input class="btn btn-outline-info" id="submit" name="submit" type="submit" value="Login">
+            {{ form.submit.field('btn btn-outline-info') | safe}}
         </div>
         <small class="text-muted ml-2">
-            Need to <a href={{ domain + "users/register"}}>Register</a>
-        </small>
-        <small class="text-muted ml-2">
             <a href="#">Forgot Password</a>
+        </small> <br />
+        <small class="text-muted ml-2">
+            Need to <a href={{ domain + "/users/register"}}>Register</a>
         </small>
+        
     </form>
 </div>
 <div class="border-top pt-3">

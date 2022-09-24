@@ -1,0 +1,46 @@
+{% extends "parent.njk" %}
+{% block head %}
+{% endblock %}
+{% block page_name %}Start Timing{% endblock %}
+
+{% block body %}
+<div class="content-section">
+<form method="POST", action="">
+    <input type="hidden" name="_csrf" value={{ crsfToken }} />
+    <fieldset class="form-group">
+        <legend>Select a Client and Project then click Start</legend>
+        <div class="form-group">
+            {{ form.project.label('form-control-label') | safe }}
+            {{ form.project.field('form-control form-control-lg', 'project_list') | safe}}
+            <datalist id="project_list">
+                {% for entry in projects %}
+                    <option value="{{ entry }}"></option>
+                {% endfor %}
+            </datalist>
+        </div>
+        <div class="form-group">
+            {{ form.task.label('form-control-label') | safe }}
+            {{ form.task.field('form-control form-control-lg', 'task_list') | safe}}
+            <datalist id="task_list">
+                {% for entry in tasks %}
+                    <option value="{{ entry }}"></option>
+                {% endfor %}
+            </datalist>
+        </div>
+        <div class="form-group">
+            {{ form.note.label('form-control-label') | safe }}
+            {{ form.note.field('form-control form-control-lg', 'note_list') | safe}}
+            <datalist id="note_list">
+                {% for entry in notes %}
+                    <option value="{{ entry }}"></option>
+                {% endfor %}
+            </datalist>
+        </div>
+    </fieldset>
+    <div class="form-group">
+        {{ form.submit.field("btn btn-outline-info") | safe }}
+        <a href={{ domain + "/" }} class="btn btn-outline-info">Cancel</a>
+    </div>
+</form>
+</div>
+{% endblock body %}

@@ -18,12 +18,22 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
+                    {% if isAuth %}
+                        <a class="nav-item nav-link" href={{ domain + "/users/account" }}>Account</a>
+                        <a class="nav-item nav-link" href={{ domain + "/users/logout" }}>Logout</a>
+                    {% else %}
+                        <a class="nav-item nav-link" href={{ domain + "/users/login" }}>Login</a>
+                        <a class="nav-item nav-link" href={{ domain + "/users/register" }}>Register</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </nav>
     </header>
     <main role="main" class="container">
+        {% if flash %}
+            <div class="alert alert-{{flash_class}}">  {{ flash }} </div>
+        {% endif %}
         {% block body %}
         {% endblock %}
     </main>
