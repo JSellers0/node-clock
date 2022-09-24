@@ -1,0 +1,54 @@
+{% extends "parent.njk" %}
+{% block head %}
+{% endblock %}
+{% block page_name %}Edit {{ item_type }}s{% endblock %}
+
+{% block body %}
+<div class="content-section">
+    {% if item_type === "Time" %}
+    <table id="time_table" style="width:100%", class=form-group>
+        <tr>
+            <th>Timelog ID</th>
+            <th>Project Name</th>
+            <th>Task Name</th>
+            <th>Note Name</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+        </tr>
+        {% for row in items %}
+        <tr>
+            <td>{{ row.timelogid }}</td>
+            <td>{{ row.project_name }}</td>
+            <td>{{ row.task_name }}</td>
+            <td>{{ row.note_name }}</td>
+            <td>{{ row.start }}</td>
+            <td>{{ row.stop }}</td>
+            <td><a  class="btn btn-outline-info"
+                href="{{domain}}/adjust/adjust_item/{{item_type}}/{{row.timelogid}}">Update</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <table id="{{item_type}}_table" style="width:100%", class=form-group>
+        <tr>
+            <th>{{item_type}} ID</th>
+            <th>{{item_type}} Name</th>
+        </tr>
+        {% for row in items %}
+        <tr>
+            <td>{{ row.itemid }}</td>
+            <td>{{ row.item_name }}</td>
+            <td><a  class="btn btn-outline-info"
+                href="{{domain}}/adjust/adjust_item/{{item_type}}/{{row.itemid}}">Update</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <a class="btn btn-outline-info" href="{{domain}}/adjust/" id="cancel">Cancel</a>
+</div>
+<p>
+    <a href="{{domain}}/">Back to Main Menu</a>
+</p>
+{% endblock body %}
