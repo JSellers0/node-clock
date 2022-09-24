@@ -14,7 +14,7 @@
             {{ form.project.field('form-control form-control-lg', 'project_list') | safe}}
             <datalist id="project_list">
                 {% for entry in projects %}
-                    <option value="{{ entry }}"></option>
+                    <option value="{{ entry.item_name }}"></option>
                 {% endfor %}
             </datalist>
         </div>
@@ -23,7 +23,7 @@
             {{ form.task.field('form-control form-control-lg', 'task_list') | safe}}
             <datalist id="task_list">
                 {% for entry in tasks %}
-                    <option value="{{ entry }}"></option>
+                    <option value="{{ entry.item_name }}"></option>
                 {% endfor %}
             </datalist>
         </div>
@@ -32,14 +32,14 @@
             {{ form.note.field('form-control form-control-lg', 'note_list') | safe}}
             <datalist id="note_list">
                 {% for entry in notes %}
-                    <option value="{{ entry }}"></option>
+                    <option value="{{ entry.item_name }}"></option>
                 {% endfor %}
             </datalist>
         </div>
     </fieldset>
     <div class="form-group">
         {{ form.submit.field("btn btn-outline-info") | safe }}
-        <a href={{ domain + "/" }} class="btn btn-outline-info">Cancel</a>
+        <a href="{{domain}}/" class="btn btn-outline-info">Cancel</a>
     </div>
 </form>
 </div>

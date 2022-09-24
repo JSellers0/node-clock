@@ -19,11 +19,11 @@
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <div class="navbar-nav mr-auto">
                     {% if isAuth %}
-                        <a class="nav-item nav-link" href={{ domain + "/users/account" }}>Account</a>
-                        <a class="nav-item nav-link" href={{ domain + "/users/logout" }}>Logout</a>
+                        <a class="nav-item nav-link" href="{{domain}}/users/account">Account</a>
+                        <a class="nav-item nav-link" href="{{domain}}/users/logout">Logout</a>
                     {% else %}
-                        <a class="nav-item nav-link" href={{ domain + "/users/login" }}>Login</a>
-                        <a class="nav-item nav-link" href={{ domain + "/users/register" }}>Register</a>
+                        <a class="nav-item nav-link" href="{{domain}}/users/login">Login</a>
+                        <a class="nav-item nav-link" href="{{domain}}/users/register">Register</a>
                     {% endif %}
                 </div>
             </div>
