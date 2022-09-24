@@ -1,63 +1,67 @@
 import { connect } from "http2"
 import { pool } from "../config/db.config"
 
+type item_list = {
+    itemid: number,
+    item_name: string
+}[]
+
+type timelog_list = {
+    timelogid: number,
+    project_name: string,
+    task_name: string,
+    note_name: string,
+    start_time: string,
+    end_time: string
+}[]
+
 class TimeClock {
-    project_list: string[]
-    task_list: string[]
-    note_list: string[]
     constructor() {
-        this.project_list = []
-        this.task_list = []
-        this.note_list = []
     }
 
     async get_list(list_name: string) {
         if (list_name === 'project') {
-            await this.get_projects()
-            return this.project_list
+            try {
+                return await this.get_projects()
+            } catch (err) {
+                // ToDo: Real Logging
+                console.log(err)
+            }
         } else if (list_name === 'task') {
-            await this.get_tasks()
-            return this.task_list
+            return await this.get_tasks()
         } else if (list_name === 'note') {
-            await this.get_notes()
-            return this.note_list
+            return await this.get_notes()
         } 
-        return []
     }
 
-    async get_projects() {
-        await pool.getConnection().then( conn => {
-            conn.query(`SELECT project_name FROM project;`)
-            .then(rows => { 
-                for (const row of rows) {
-                    this.project_list.push(row.project_name)
-                }
-            }).then(res => {conn.end()})
+    private async get_projects() {
+        let item_list: item_list = await pool.getConnection()
+        .then( async conn => {
+            const rows = await conn.query(`SELECT projectid AS itemid, project_name AS item_name FROM project;`)
+            conn.end()
+            return rows
         })
+        return item_list
     }
 
-    async get_tasks() {
-        await pool.getConnection()
-        .then(conn => {
-            conn.query(`SELECT task_name FROM task;`)
-            .then(rows => { 
-                for (const row of rows) {
-                    this.task_list.push(row.task_name)
-                }
-            }).then(res => {conn.end()})
+    private async get_tasks() {
+        let item_list: item_list = await pool.getConnection()
+        .then(async conn => {
+            const rows = await conn.query(`SELECT taskid AS itemid, task_name AS item_name FROM task;`)
+            conn.end()
+            return rows
         })
+        return item_list
     }
 
-    async get_notes() {
-        await pool.getConnection()
-        .then(conn => {
-            conn.query(`SELECT note_name FROM note;`)
-            .then(rows => { 
-                for (const row of rows) {
-                    this.note_list.push(row.note_name)
-                }
-            }).then(res => {conn.end()})
+    private async get_notes() {
+        let item_list: item_list = await pool.getConnection()
+        .then(async conn => {
+            const rows = await conn.query(`SELECT noteid AS itemid, note_name AS item_name FROM note;`)
+            conn.end()
+            return rows
         })
+        return item_list
     }
 }
 
