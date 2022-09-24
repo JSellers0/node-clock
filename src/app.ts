@@ -6,9 +6,10 @@ import createHttpError from 'http-errors'
 import nunjucks from 'nunjucks'
 import path from 'path'
 
-import {domainHandler, errorHandler, PORT} from './modules/config'
+import {domainHandler, errorHandler, PORT} from './middleware/config'
 import clockRoute from './routes/clockRoutes'
 import userRoute from './routes/userRoutes'
+import adjustRoute from './routes/adjustRoutes'
 
 dotenv.config()
 
@@ -29,6 +30,7 @@ app.use(domainHandler)
 
 app.use('/', clockRoute)
 app.use('/users', userRoute)
+app.use('/adjust', adjustRoute)
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(new createHttpError.NotFound())
