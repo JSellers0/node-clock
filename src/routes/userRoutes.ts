@@ -1,6 +1,7 @@
 import express, {Router, Request, Response} from 'express'
 
 import * as userController from '../controllers/userController'
+import { authenticateJWT } from '../middleware/auth'
 import {crsfProtection, parseForm} from '../middleware/config'
 
 const userRoute:Router = express.Router()
@@ -14,7 +15,7 @@ userRoute.route('/login')
     .post(parseForm, crsfProtection, userController.user_login_post)
 
 userRoute.route('/account')
-    .get(crsfProtection, userController.user_detail_get)
+    .get(authenticateJWT, crsfProtection, userController.user_detail_get)
     .put(parseForm, crsfProtection, userController.user_detail_update)
     .delete(parseForm, crsfProtection, userController.user_detail_delete)
 

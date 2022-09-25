@@ -1,7 +1,7 @@
 import { connect } from "http2"
 import { pool } from "../config/db.config"
 
-type item_list = {
+export type item_list = {
     itemid: number,
     item_name: string
 }[]
@@ -62,6 +62,20 @@ class TimeClock {
             return rows
         })
         return item_list
+    }
+
+    async get_timelog_by_id(timelogid: string) {
+        let timelog: timelog_list = await pool.getConnection()
+        .then(async conn => {
+            const rows = await conn.query(`SELECT timelogid, projectid, taskid, noteid, start, stop FROM timelog WHERE timelogid = ${timelogid}`)
+            conn.end()
+            return rows
+        })
+        return timelog
+    }
+
+    async start_timing() {
+        
     }
 }
 

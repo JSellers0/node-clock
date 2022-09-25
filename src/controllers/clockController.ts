@@ -2,14 +2,20 @@ import {Request, Response, NextFunction} from 'express'
 import { StartForm } from '../forms/forms'
 import timeclock from '../models/timeclock.model'
 
+export function home_get(req: Request, res: Response) {
+    return res.render("webhome.njk", {domain: res.locals.domain})
+}
+
 export function clock_get(req: Request, res: Response, next: NextFunction) {
     let site_components = {
         domain: res.locals.domain,
         message: "Click Start to start timing",
-        isAuth: req.cookies['isAuth']
+        flash: req.cookies['flash'],
+        flash_class: req.cookies['flash_class'],
+        isAuth: true
     }
-    
-    res.render("webtime.njk", site_components)
+    res.clearCookie('flash')
+    return res.render("webtime.njk", site_components)
 }
 
 export async function clock_start_get(req: Request, res: Response, next: NextFunction) {
@@ -25,10 +31,13 @@ export async function clock_start_get(req: Request, res: Response, next: NextFun
         tasks: tasks,
         notes: notes
     }
-    res.render("start.njk", site_components)
+    return res.render("start.njk", site_components)
 }
 
 export async function clock_start_post(req: Request, res: Response, next: NextFunction) {
-    //res.render("start.njk", {crsfToken: req.csrfToken(), domain: res.locals.domain})
-    res.send("NOT IMPLEMENTED: clock start POST")
+    console.log(res.locals.jwtPayload.userid)
+    if (req.cookies['timelogid']) {
+        let current_timelog = await timeclock.get_timelog_by_id(req.cookies['timelogid'])
+    }
+    return res.send("NOT IMPLEMENTED: clock start POST")
 }

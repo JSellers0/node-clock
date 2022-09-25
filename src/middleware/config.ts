@@ -14,9 +14,10 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
 }
 
-export const PORT: Number = Number(process.env.PORT) || 4000
-
 export const domainHandler = (req: Request, res: Response, next: NextFunction) => {
     res.locals.domain = "http://localhost:4000";
     next();
 }
+
+export const PORT: Number = Number(process.env.PORT) || 4000
+export const JWTSECRET: string = process.env.JWTSECRET || 'Tc07nAwIZuZlb35vJvd'

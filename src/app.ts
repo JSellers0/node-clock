@@ -1,5 +1,5 @@
 import cookieParser from 'cookie-parser'
-import dotenv from 'dotenv'
+import 'dotenv/config'
 import express, {Request, Response, NextFunction, Application} from 'express'
 import {Server} from 'http'
 import createHttpError from 'http-errors'
@@ -10,8 +10,6 @@ import {domainHandler, errorHandler, PORT} from './middleware/config'
 import clockRoute from './routes/clockRoutes'
 import userRoute from './routes/userRoutes'
 import adjustRoute from './routes/adjustRoutes'
-
-dotenv.config()
 
 const app: Application = express()
 

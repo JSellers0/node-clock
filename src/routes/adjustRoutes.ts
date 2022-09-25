@@ -1,9 +1,12 @@
 import express, {Router, Request, Response} from 'express'
 
 import * as adjustController from '../controllers/adustController'
+import { authenticateJWT } from '../middleware/auth'
 import {crsfProtection, parseForm} from '../middleware/config'
 
 const adjustRoute:Router = express.Router()
+
+adjustRoute.use(authenticateJWT)
 
 adjustRoute.route('/')
     .get(adjustController.adjust_get)

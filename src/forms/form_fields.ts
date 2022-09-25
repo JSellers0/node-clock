@@ -5,7 +5,7 @@ abstract class FormField {
     display_name: string
     validators: FormValidator[] | []
     constructor(name: string, validators?: FormValidator[]) {
-        this.name = name.toLowerCase()
+        this.name = name.toLowerCase().replace(' ', '')
         this.display_name = name
         if (typeof validators !== 'undefined'){
             this.validators = validators
