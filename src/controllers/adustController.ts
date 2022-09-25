@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from 'express'
 import timeclock from '../models/timeclock.model'
 
 export function adjust_get(req: Request, res: Response, next: NextFunction) {
-    return res.render("adjust.njk", {domain: res.locals.domain, isAuth: res.locals.is_authenticated})
+    return res.render("adjust.njk", {domain: res.locals.domain, isAuth: true})
 }
 
 export async function item_select_get(req: Request, res: Response, next: NextFunction) {
@@ -13,7 +13,8 @@ export async function item_select_get(req: Request, res: Response, next: NextFun
                 return {
                     domain: res.locals.domain,
                     item_type: item_type,
-                    items: items
+                    items: items,
+                    isAuth: true
                 }
             }). then((site_components) => {
                 return res.render("adjust_itemselect.njk", site_components)

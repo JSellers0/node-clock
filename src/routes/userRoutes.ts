@@ -16,8 +16,8 @@ userRoute.route('/login')
 
 userRoute.route('/account')
     .get(authenticateJWT, crsfProtection, userController.user_detail_get)
-    .put(parseForm, crsfProtection, userController.user_detail_update)
-    .delete(parseForm, crsfProtection, userController.user_detail_delete)
+    .put(authenticateJWT, parseForm, crsfProtection, userController.user_detail_update)
+    .delete(authenticateJWT, parseForm, crsfProtection, userController.user_detail_delete)
 
 userRoute.route('/logout')
     .get(userController.user_logout)

@@ -10,6 +10,7 @@ import {domainHandler, errorHandler, PORT} from './middleware/config'
 import clockRoute from './routes/clockRoutes'
 import userRoute from './routes/userRoutes'
 import adjustRoute from './routes/adjustRoutes'
+import reportRoute from './routes/reportRoutes'
 
 const app: Application = express()
 
@@ -29,6 +30,7 @@ app.use(domainHandler)
 app.use('/', clockRoute)
 app.use('/users', userRoute)
 app.use('/adjust', adjustRoute)
+app.use('/report', reportRoute)
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(new createHttpError.NotFound())

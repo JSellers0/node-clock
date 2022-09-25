@@ -1,0 +1,30 @@
+{% extends "parent.njk" %}
+{% block head %}
+{% endblock %}
+{% block page_name %}Reporting Menu{% endblock %}
+
+{% block body %}
+
+<div class="content-section">
+    <form method="POST" action="">
+        <input type="hidden" name="_csrf" value={{ crsfToken }} />
+        <fieldset class="form-group">
+            <legend>Select the Dates for the Report:</legend>
+            <div class="form-group">
+                {{ form.range_begin.label("form-control-label") | safe }}
+                {{ form.range_begin.field("form-control form-control-lg") | safe }}
+            </div>
+            <div class="form-group">
+                {{ form.range_end.label("form-control-label") | safe }}
+                {{ form.range_end.field("form-control form-control-lg") | safe }}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit.field("btn btn-outline-info") | safe}}
+        </div>
+    </form>
+</div>
+<p>
+    <a href="{{domain}}/clock">Back to Main Menu</a>
+</p>
+{% endblock %}

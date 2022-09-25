@@ -1,4 +1,4 @@
-import express, {Router, Request, Response} from 'express'
+import express, {Router} from 'express'
 
 import * as clockController from '../controllers/clockController'
 import { authenticateJWT } from '../middleware/auth'
@@ -14,4 +14,6 @@ clockRoute.route('/start')
     .get(authenticateJWT, crsfProtection, clockController.clock_start_get)
     .post(authenticateJWT, parseForm, crsfProtection, clockController.clock_start_post)
 
+clockRoute.get("/stop", authenticateJWT, clockController.clock_stop)
+    
 export default clockRoute
