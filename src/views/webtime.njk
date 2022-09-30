@@ -6,10 +6,7 @@
 {% block body %}
 <div class="content-section">
     <div>
-        {% if "Click" in message %}
-            <h1 id="message">{{ message }}</h1>
-        
-        {% endif %}
+        <h1 id="message">{{ message | safe}}</h1>
     </div><br/>
     <div id="controlpanel" class="form-group">
         <a class="btn btn-outline-info" href={{ domain + "/start" }} id="start">Start</a>
