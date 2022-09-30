@@ -6,21 +6,21 @@
 {% block body %}
 <div class="content-section">
     <form method="POST" action="">
-        {{ form.hidden_tag() }}
+        <input type="hidden" name="_csrf" value={{ crsfToken }} />
         <fieldset class="form-group">
             <legend>Select the Date you want to adjust:</legend>
             <div class="form-group">
-                {{ form.range_begin.label(class="form-control-label") }}
-                {{ form.range_begin(class="form-control form-control-lg") }}
+                {{ form.range_begin.label("form-control-label") | safe}}
+                {{ form.range_begin.field("form-control form-control-lg") | safe}}
             </div>
         </fieldset>
         <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
-            <a class="btn btn-outline-info" href={{ url_for( "adjust" ) }} id="cancel">Cancel</a>
+            {{ form.submit.field("btn btn-outline-info") | safe}}
+            <a class="btn btn-outline-info" href="{{domain}}/adjust" id="cancel">Cancel</a>
         </div>
     </form>
 </div>
 <p>
-    <a href={{ url_for( "webtime" ) }}>Back to Main Menu</a>
+    <a href="{{domain}}/clock">Back to Main Menu</a>
 </p>
 {% endblock body %}
