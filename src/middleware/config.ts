@@ -15,7 +15,9 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 }
 
 export const domainHandler = (req: Request, res: Response, next: NextFunction) => {
-    res.locals.domain = "http://localhost:4000";
+    res.locals.site_components = {
+        domain: "http://localhost:4000"
+    };
     next();
 }
 
