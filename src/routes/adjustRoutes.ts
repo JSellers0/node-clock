@@ -12,7 +12,7 @@ adjustRoute.route('/')
     .get(adjustController.adjust_get)
 
 adjustRoute.route('/:item_type')
-    .get(adjustController.item_select_get)
+    .get(crsfProtection, adjustController.item_select_get)
 
 adjustRoute.route('/:item_type/:item_id')
     .get(crsfProtection, adjustController.item_adjust_get)
