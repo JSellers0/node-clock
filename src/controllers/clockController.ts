@@ -11,8 +11,7 @@ export async function clock_get(req: Request, res: Response) {
     if (req.cookies['timelogid']) {
         let tld = await timeclock.get_timelog_display_by_id(req.cookies['timelogid'])
         // ToDo: Local time
-        let start: string = new Date(tld.start_time).toISOString().replace('T', ' ').replace(/\..+/,'')
-        message = `Started ${tld.project} - ${tld.task}<br />${tld.note}<br />at ${start}`
+        message = `Started ${tld.project} - ${tld.task}<br />${tld.note}<br />at ${timeclock.format_timestamp(tld.start)}`
     }
     // Need a message for stopped timing
     let site_components = Object.assign({}, res.locals.site_components, {
@@ -26,7 +25,7 @@ export async function clock_get(req: Request, res: Response) {
 }
 
 export async function clock_start_get(req: Request, res: Response) {
-    let form = new StartForm()
+    let form: StartForm = new StartForm()
     let site_components = Object.assign({}, res.locals.site_components, {
         crsfToken: req.csrfToken(),
         form: form,
@@ -39,10 +38,10 @@ export async function clock_start_get(req: Request, res: Response) {
 
 export async function clock_start_post(req: Request, res: Response) {
     req.body['userid'] = res.locals.jwtPayload.userid
-    req.body['start_time'] = new Date().toISOString().replace(/\..+/,'')
+    req.body['start'] = new Date().toISOString().replace(/\..+/,'')
     if (req.cookies['timelogid']) {
         // I'm already timing something, so I need to switch
-        await timeclock.stop_timing(req.cookies['timelogid'], req.body['start_time'])
+        await timeclock.stop_timing(req.cookies['timelogid'], req.body['start'])
         let db_result = await timeclock.start_timing(req.body)
         res.cookie('timelogid', Number(db_result.insertId))
         return res.redirect("/clock")
