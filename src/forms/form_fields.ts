@@ -28,13 +28,18 @@ export class StringField extends FormField {
     constructor(name: string, validators?: FormValidator[]) {
         super(name, validators)
     }
-    field(class_string: string, list?:string): string {
+    field(class_string: string, value?:string, list?:string): string {
         let html_field: string
         // ToDo: Do this better
-        if (typeof(list) === 'undefined') {
-            html_field = `<input id="${this.name}" class="${class_string}" name="${this.name}" type="text" value="">`
+        if (typeof(value) !== 'undefined') {
+            if (typeof(list) !== 'undefined') {
+                html_field = `<input id="${this.name}" class="${class_string}" name="${this.name}" type="text" value="${value}" list="${list}">`
+            }
+            else {
+                html_field = `<input id="${this.name}" class="${class_string}" name="${this.name}" type="text" value="${value}">`
+            }   
         } else {
-            html_field = `<input id="${this.name}" class="${class_string}" name="${this.name}" type="text" value="" list="${list}">`
+            html_field = `<input id="${this.name}" class="${class_string}" name="${this.name}" type="text" value="">`
         }
         return this.validate(html_field)
     }
