@@ -1,14 +1,15 @@
 import bcrypt from 'bcrypt'
-import {Request, Response, NextFunction} from 'express'
-import { pool } from '../config/db.config'
+import {Request, Response} from 'express'
 import {LoginForm, RegisterForm} from '../forms/forms'
 import jwt from "jsonwebtoken"
 import user from '../models/user.model'
 import { JWTSECRET } from '../middleware/config'
 
+// ToDo: Try/catch db calls
+
 export function user_create_get(req: Request, res: Response) {
-    let form = new RegisterForm()
-    let site_components = Object.assign({}, res.locals.site_components, {
+    let form: RegisterForm = new RegisterForm()
+    let site_components: {} = Object.assign({}, res.locals.site_components, {
         crsfToken: req.csrfToken(), 
         form: form,
         flash: req.cookies['flash'],
@@ -40,7 +41,7 @@ export async function user_create_post(req: Request, res: Response) {
 }
 
 export function user_login_get(req: Request, res: Response) {
-    let form = new LoginForm()
+    let form: LoginForm = new LoginForm()
     let site_components = Object.assign({}, res.locals.site_components, {
         crsfToken: req.csrfToken(),
         form: form,
