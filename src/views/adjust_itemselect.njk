@@ -1,3 +1,5 @@
+{# ToDo: Delete Button #}
+
 {% extends "parent.njk" %}
 {% block head %}
 {% endblock %}
@@ -18,13 +20,13 @@
         {% for row in items %}
         <tr>
             <td>{{ row.timelogid }}</td>
-            <td>{{ row.project_name }}</td>
-            <td>{{ row.task_name }}</td>
-            <td>{{ row.note_name }}</td>
-            <td>{{ row.start }}</td>
-            <td>{{ row.stop }}</td>
+            <td>{{ row.project }}</td>
+            <td>{{ row.task }}</td>
+            <td>{{ row.note }}</td>
+            <td>{{ ft(row.start) }}</td>
+            <td>{{ ft(row.stop) }}</td>
             <td><a  class="btn btn-outline-info"
-                href="{{domain}}/adjust/adjust_item/{{item_type}}/{{row.timelogid}}">Update</a>
+                href="{{domain}}/adjust/{{item_type.toLowerCase()}}/{{row.timelogid}}">Update</a>
             </td>
         </tr>
         {% endfor %}
@@ -40,7 +42,7 @@
             <td>{{ row.itemid }}</td>
             <td>{{ row.item_name }}</td>
             <td><a  class="btn btn-outline-info"
-                href="{{domain}}/adjust/adjust_item/{{item_type}}/{{row.itemid}}">Update</a>
+                href="{{domain}}/adjust/{{item_type.toLowerCase()}}/{{row.itemid}}">Update</a>
             </td>
         </tr>
         {% endfor %}

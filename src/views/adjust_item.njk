@@ -1,12 +1,12 @@
-{% extends "parent.html" %}
+{% extends "parent.njk" %}
 {% block head %}
 {% endblock %}
-{% block page_name %}Edit {{ item_type.title() }}{% endblock %}
+{% block page_name %}Edit {{ item_type }}{% endblock %}
 
 {% block body %}
 <div class="content-section">
 <form method="POST" action="">
-    {{ form.hidden_tag() }}
+    <input type="hidden" name="_csrf" value={{ crsfToken }} />
     <fieldset class="form-group">
         <legend>Make updates and then click Submit.</legend>
         <div class="form-group"
@@ -14,53 +14,53 @@
         style="display:none"
         {% endif %}
         >
-            {{ form.start.label(class="form-control-label") }}
-            {{ form.start(class="form-control form-control-lg", value=item.get("start")) }}
+            {{ form.start.label("form-control-label") | safe }}
+            {{ form.start.field("form-control form-control-lg", item["start"]) | safe }}
         </div>
         <div class="form-group"
         {% if item_type != "time" %}
         style="display:none"
         {% endif %}
         >
-            {{ form.stop.label(class="form-control-label") }}
-            {{ form.stop(class="form-control form-control-lg", value=item.get("stop")) }}
+            {{ form.stop.label("form-control-label") | safe }}
+            {{ form.stop.field("form-control form-control-lg", item["stop"]) | safe }}
         </div>
         <div class="form-group"
         {% if item_type not in ["time", "project"] %}
         style="display:none"
         {% endif %}
         >
-            {{ form.project.label(class="form-control-label") }}
-            {{ form.project(class="form-control form-control-lg", value=item.get("project_name")) }}
+            {{ form.project.label("form-control-label") | safe }}
+            {{ form.project.field("form-control form-control-lg", item["item_name"]) | safe }}
         </div>
         <div class="form-group"
         {% if item_type not in ["time", "task"] %}
         style="display:none"
         {% endif %}
         >
-            {{ form.task.label(class="form-control-label") }}
-            {{ form.task(class="form-control form-control-lg", value=item.get("task_name")) }}
+            {{ form.task.label("form-control-label") | safe }}
+            {{ form.task.field("form-control form-control-lg", item["task"]) | safe }}
         </div>
         <div class="form-group"
         {% if item_type not in ["time", "note"] %}
         style="display:none"
         {% endif %}
         >
-            {{ form.note.label(class="form-control-label") }}
-            {{ form.note(class="form-control form-control-lg", value=item.get("note_name")) }}
+            {{ form.note.label("form-control-label") | safe }}
+            {{ form.note.field("form-control form-control-lg", item["note"]) | safe }}
         </div>
         <div class="form-group"
         {% if item_type not in ["time"] %}
         style="display:none"
         {% endif %}
         >
-            {{ form.adjacent() }}
+            {{ form.adjacent.field() }}
             {{ form.adjacent.label() }}
         </div>
     </fieldset>
     <div class="form-group">
-        {{ form.submit(class="btn btn-outline-info") }}
-        <a href={{ url_for( "adjust" ) }} class="btn btn-outline-info">Cancel</a>
+        {{ form.submit.field("btn btn-outline-info") | safe }}
+        <a href="{{domain}}/adjust/" class="btn btn-outline-info">Cancel</a>
     </div>
 </form>
 </div>

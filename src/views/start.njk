@@ -11,7 +11,7 @@
         <legend>Select a Client and Project then click Start</legend>
         <div class="form-group">
             {{ form.project.label('form-control-label') | safe }}
-            {{ form.project.field('form-control form-control-lg', 'project_list') | safe}}
+            {{ form.project.field('form-control form-control-lg', '', 'project_list') | safe}}
             <datalist id="project_list">
                 {% for entry in projects %}
                     <option value="{{ entry.item_name }}"></option>
@@ -20,7 +20,7 @@
         </div>
         <div class="form-group">
             {{ form.task.label('form-control-label') | safe }}
-            {{ form.task.field('form-control form-control-lg', 'task_list') | safe}}
+            {{ form.task.field('form-control form-control-lg', '', 'task_list') | safe}}
             <datalist id="task_list">
                 {% for entry in tasks %}
                     <option value="{{ entry.item_name }}"></option>
@@ -29,7 +29,7 @@
         </div>
         <div class="form-group">
             {{ form.note.label('form-control-label') | safe }}
-            {{ form.note.field('form-control form-control-lg', 'note_list') | safe}}
+            {{ form.note.field('form-control form-control-lg', '', 'note_list') | safe}}
             <datalist id="note_list">
                 {% for entry in notes %}
                     <option value="{{ entry.item_name }}"></option>
