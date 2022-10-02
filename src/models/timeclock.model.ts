@@ -1,7 +1,7 @@
 import { connect } from "http2"
 import { pool } from "../config/db.config"
 
-type item = {
+export type item = {
     itemid: number,
     item_name: string
 }
@@ -14,8 +14,8 @@ export type timelog_form_data = {
     project: string,
     task: string,
     note: string,
-    start_time: string,
-    end_time: string | undefined
+    start: string,
+    stop: string | undefined
 }
 type timelog_record = {
     timelogid: number | undefined,
@@ -23,9 +23,11 @@ type timelog_record = {
     projectid: number,
     taskid: number,
     noteid: number,
-    start_time: string,
-    end_time: string | undefined
+    start: string,
+    stop: string | undefined
 }
+
+// ToDo: Create item if not exists
 
 class TimeClock {
     constructor() {
@@ -52,7 +54,7 @@ class TimeClock {
 
     }
 
-    async get_timelog_by_id(timelogid: number) {
+    async get_timelog_by_id(timelogid: string) {
         let timelog: timelog_record = await pool.getConnection()
         .then(async cnxn => {
             let rows = await cnxn.query(`SELECT timelogid, userid, projectid, taskid, noteid, start, stop FROM timelog WHERE timelogid = ${timelogid};`)
@@ -62,7 +64,7 @@ class TimeClock {
         return timelog
     }
 
-    async get_timelog_display_by_id(timelogid: number) {
+    async get_timelog_display_by_id(timelogid: string): Promise<timelog_form_data> {
         let timelog: timelog_form_data = await pool.getConnection()
         .then(async cnxn => {
             let sql_query = `
@@ -72,10 +74,29 @@ class TimeClock {
                 INNER JOIN task tk ON tk.taskid = t.taskid
                 INNER JOIN note n ON n.noteid = t.noteid
             WHERE t.timelogid = ${timelogid}
-            `
+            ;`
             let rows = await cnxn.query(sql_query)
             cnxn.end()
             return rows[0]
+        })
+        return timelog
+    }
+
+    async get_timelog_by_date(userid: string, timelog_date: string): Promise<timelog_form_data> {
+        let timelog: timelog_form_data = await pool.getConnection()
+        .then(async cnxn => {
+            let sql_query = `
+            SELECT timelogid, project_name AS project, task_name AS task, note_name AS note, start, stop
+            FROM timelog t
+                INNER JOIN project p ON p.projectid = t.projectid
+                INNER JOIN task tk ON tk.taskid = t.taskid
+                INNER JOIN note n ON n.noteid = t.noteid
+            WHERE userid = ${userid}
+                AND (Cast(start AS DATE) = '${timelog_date}' OR Cast(stop as DATE) = '${timelog_date}')
+            ;`
+            let rows = await cnxn.query(sql_query)
+            cnxn.end()
+            return rows
         })
         return timelog
     }
@@ -85,7 +106,7 @@ class TimeClock {
         .then(async cnxn => {
             let sql_query = `
             INSERT INTO timelog (userid, projectid, taskid, noteid, start)
-            SELECT ${timelog_data.userid}, projectid, taskid, noteid, '${timelog_data.start_time}'
+            SELECT ${timelog_data.userid}, projectid, taskid, noteid, '${timelog_data.start}'
             FROM 
             (SELECT projectid FROM project WHERE project_name = '${timelog_data.project}') p,
             (SELECT taskid FROM task WHERE task_name = '${timelog_data.task}') t,
@@ -106,6 +127,10 @@ class TimeClock {
             return rows
         })
         return result
+    }
+
+    format_timestamp(timestamp: string): string {
+        return new Date(timestamp).toISOString().replace('T', ' ').replace(/\..+/,'')
     }
 }
 
