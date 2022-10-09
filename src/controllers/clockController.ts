@@ -10,7 +10,6 @@ export async function clock_get(req: Request, res: Response) {
     let message: string = "Click Start to start timing"
     if (req.cookies['timelogid']) {
         let tld = await timeclock.get_timelog_display_by_id(req.cookies['timelogid'])
-        // ToDo: Local time
         message = `Started ${tld.project} - ${tld.task}<br />${tld.note}<br />at ${timeclock.format_timestamp(tld.start)}`
     }
     // Need a message for stopped timing
