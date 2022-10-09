@@ -33,7 +33,7 @@ class TimeClock {
     constructor() {
     }
 
-    async get_list(list_name: string) {
+    async get_list(list_name: string): Promise<item_list> {
         let item_list: item_list = await pool.getConnection()
         .then( async cnxn => {
             let rows = await cnxn.query(`SELECT ${list_name}id AS itemid, ${list_name}_name AS item_name FROM ${list_name};`)
@@ -43,7 +43,7 @@ class TimeClock {
         return item_list
     }
 
-    async get_item_by_id(item_id: string, item_type: string) {
+    async get_item_by_id(item_id: string, item_type: string): Promise<item> {
         let item: item = await pool.getConnection()
         .then( async cnxn => {
             let rows = await cnxn.query(`SELECT ${item_type}id AS itemid, ${item_type}_name AS item_name FROM ${item_type} WHERE ${item_type}id = ${item_id};`)
@@ -52,6 +52,16 @@ class TimeClock {
         })
         return item
 
+    }
+    
+    async get_item_by_name(item_type: string, item_name: string): Promise<item> {
+        let item: item = await pool.getConnection()
+        .then( async cnxn => {
+            let rows = await cnxn.query(`SELECT ${item_type}id AS itemid, ${item_type}_name AS item_name FROM ${item_type} WHERE ${item_type}_name = '${item_name}';`)
+            cnxn.end()
+            return rows[0]
+        })
+        return item
     }
 
     async get_timelog_by_id(timelogid: string) {
@@ -68,7 +78,7 @@ class TimeClock {
         let timelog: timelog_form_data = await pool.getConnection()
         .then(async cnxn => {
             let sql_query = `
-            SELECT timelogid, project_name AS project, task_name AS task, note_name AS note, start AS start_time
+            SELECT timelogid, project_name AS project, task_name AS task, note_name AS note, start, stop
             FROM timelog t
                 INNER JOIN project p ON p.projectid = t.projectid
                 INNER JOIN task tk ON tk.taskid = t.taskid
@@ -101,7 +111,35 @@ class TimeClock {
         return timelog
     }
 
+    async create_item(item_type: string, item_name: string): Promise<item> {
+        let item: item = await pool.getConnection()
+        .then(async cnxn => {
+            let rows = await cnxn.query(`INSERT INTO ${item_type} (${item_type}_name) VALUES ('${item_name}');`)
+            cnxn.end()
+            return rows[0]
+        })
+        return item
+    }
+
+    async create_if_not_exists(item_type: string, item_name: string): Promise<item> {
+        let item: item = await pool.getConnection()
+        .then(async cnxn => {
+            let check_rows: item = await this.get_item_by_name(item_type, item_name)
+            if (!check_rows) {
+                let ins_rows: item = await this.create_item(item_type, item_name)
+                cnxn.end()
+                return ins_rows
+            }
+            cnxn.end()
+            return check_rows
+        })
+        return item
+    }
+
     async start_timing(timelog_data: timelog_form_data,) {
+        await this.create_if_not_exists('project', timelog_data.project)
+        await this.create_if_not_exists('task', timelog_data.task)
+        await this.create_if_not_exists('note', timelog_data.note)
         let result = await pool.getConnection()
         .then(async cnxn => {
             let sql_query = `
@@ -130,7 +168,18 @@ class TimeClock {
     }
 
     format_timestamp(timestamp: string): string {
-        return new Date(timestamp).toISOString().replace('T', ' ').replace(/\..+/,'')
+        let converted_timestamp: string
+        try {
+            // ToDo: Better conversion function.  I don't understand why this works.
+            let date: Date = new Date(timestamp)
+            date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
+            converted_timestamp = new Date((date.getTime() - (date.getTimezoneOffset() * 60000))).toISOString().replace('T', ' ').replace(/\..+/,'')
+        } catch (err) {
+            // ToDo: Real Logging
+            console.log(err)
+            converted_timestamp = ''
+        }
+        return converted_timestamp
     }
 }
 
