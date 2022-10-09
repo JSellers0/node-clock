@@ -1,3 +1,4 @@
+import { time } from 'console'
 import {Request, Response, NextFunction} from 'express'
 import { DateSelectForm, ItemEditForm } from '../forms/forms'
 import timeclock, { item, timelog_form_data } from '../models/timeclock.model'
@@ -63,18 +64,17 @@ export async function item_adjust_get(req: Request, res: Response, next: NextFun
     // Get item
     if (req.params.item_type === 'time') {
         item = await timeclock.get_timelog_display_by_id(req.params.item_id)
-
     } else {
-        console.log("It's an item.")
         item = await timeclock.get_item_by_id(req.params.item_id, req.params.item_type)
     }
-    console.log(item)
     let site_components = Object.assign({}, res.locals.site_components, {
         crsfToken: req.csrfToken(),
         form: form,
         item: item,
+        item_type: req.params.item_type,
         flash: req.cookies['flash'],
-        flash_class: req.cookies['flash_class']
+        flash_class: req.cookies['flash_class'],
+        ft: timeclock.format_timestamp
     })
     res.render("adjust_item.njk", site_components)
 }
