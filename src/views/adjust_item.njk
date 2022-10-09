@@ -9,54 +9,48 @@
     <input type="hidden" name="_csrf" value={{ crsfToken }} />
     <fieldset class="form-group">
         <legend>Make updates and then click Submit.</legend>
-        <div class="form-group"
-        {% if item_type != "time" %}
-        style="display:none"
-        {% endif %}
-        >
+        {# ToDo: Field List for project, task, note #}
+        {% if item_type === "time" %}
+        <div class="form-group">
             {{ form.start.label("form-control-label") | safe }}
-            {{ form.start.field("form-control form-control-lg", item["start"]) | safe }}
+            {{ form.start.field("form-control form-control-lg", ft(item["start"])) | safe }}
         </div>
-        <div class="form-group"
-        {% if item_type != "time" %}
-        style="display:none"
-        {% endif %}
-        >
+        <div class="form-group">
             {{ form.stop.label("form-control-label") | safe }}
-            {{ form.stop.field("form-control form-control-lg", item["stop"]) | safe }}
+            {{ form.stop.field("form-control form-control-lg", ft(item["stop"])) | safe }}
         </div>
-        <div class="form-group"
-        {% if item_type not in ["time", "project"] %}
-        style="display:none"
-        {% endif %}
-        >
+        <div class="form-group">
             {{ form.project.label("form-control-label") | safe }}
-            {{ form.project.field("form-control form-control-lg", item["item_name"]) | safe }}
+            {{ form.project.field("form-control form-control-lg", item["project"]) | safe }}
         </div>
-        <div class="form-group"
-        {% if item_type not in ["time", "task"] %}
-        style="display:none"
-        {% endif %}
-        >
+        <div class="form-group">
             {{ form.task.label("form-control-label") | safe }}
             {{ form.task.field("form-control form-control-lg", item["task"]) | safe }}
         </div>
-        <div class="form-group"
-        {% if item_type not in ["time", "note"] %}
-        style="display:none"
-        {% endif %}
-        >
+        <div class="form-group">
             {{ form.note.label("form-control-label") | safe }}
             {{ form.note.field("form-control form-control-lg", item["note"]) | safe }}
         </div>
-        <div class="form-group"
-        {% if item_type not in ["time"] %}
-        style="display:none"
-        {% endif %}
-        >
-            {{ form.adjacent.field() }}
-            {{ form.adjacent.label() }}
+        <div class="form-group">
+            {{ form.adjacent.field() | safe }}
+            {{ form.adjacent.label() | safe }}
         </div>
+        {% elif item_type === 'project' %}
+        <div class="form-group">
+            {{ form.project.label("form-control-label") | safe }}
+            {{ form.project.field("form-control form-control-lg", item["item_name"]) | safe }}
+        </div>
+        {% elif item_type === 'task' %}
+        <div class="form-group">
+            {{ form.task.label("form-control-label") | safe }}
+            {{ form.task.field("form-control form-control-lg", item["item_name"]) | safe }}
+        </div>
+        {% elif item_type === 'note' %}
+        <div class="form-group">
+            {{ form.note.label("form-control-label") | safe }}
+            {{ form.note.field("form-control form-control-lg", item["item_name"]) | safe }}
+        </div>
+        {% endif %}
     </fieldset>
     <div class="form-group">
         {{ form.submit.field("btn btn-outline-info") | safe }}
